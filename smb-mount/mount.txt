@@ -1,0 +1,11 @@
+net use X: \\192.168.1.15\fileshare /user:suke
+
+net use X: /delete
+
+net use X: /delete /no
+
+
+
+net use X: \\192.168.1.15\fileshare /savecred /PERSISTENT:no
+
+net use X: /delete
