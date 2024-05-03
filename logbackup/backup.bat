@@ -1,7 +1,19 @@
 @echo off
 
+rem env読み込み
+call env.bat
+
+
+rem 参考　環境変数表示
+echo %enc_text%
+rem 復号処理呼び出し
+FOR /F "usebackq" %%i IN (`powershell -executionpolicy Bypass -File .\encrypt\dec.ps1`) DO set value=%%i
+rem 参考　復号済み文字列表示
+echo dec: %value%
+
+
 rem ディレクトリ存在確認
-if not exist .\input\iis_access\ (
+if not exist %input_path% (
     echo エラー：input\iis_accessディレクトリが存在しません
     exit /b 1
 )
@@ -32,10 +44,11 @@ if %errorlevel% neq 0 (
     echo %errorlevel% 成功: %target% ファイルコピー
 )
 
+rem zipファイル名に使用するタイムスタンプ生成
 set time2=%time: =0%
 set timestamp=%date:~0,4%%date:~5,2%%date:~8,2%%time2:~0,2%%time2:~3,2%%time2:~6,2%
 
-rem 対象フォルダを圧縮コピー
+rem 対象フォルダをzip圧縮し、outputフォルダへ出力
 PowerShell -Command "Compress-Archive -Path .\work\iis\ -DestinationPath .\output\iis\iis_access_%timestamp%.zip -Force"
 
 rem クリーニング対象一覧表示
