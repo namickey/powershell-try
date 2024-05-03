@@ -48,8 +48,18 @@ rem zipファイル名に使用するタイムスタンプ生成
 set time2=%time: =0%
 set timestamp=%date:~0,4%%date:~5,2%%date:~8,2%%time2:~0,2%%time2:~3,2%%time2:~6,2%
 
-rem 対象フォルダをzip圧縮し、outputフォルダへ出力
-PowerShell -Command "Compress-Archive -Path .\work\iis\ -DestinationPath .\output\iis\iis_access_%timestamp%.zip -Force"
+rem workディレクトリにファイルが存在するか確認。ファイルが存在する場合のみzip圧縮する
+for /f %%i in ('dir .\work\iis\*.log /a-d /b ^| find /c /v ""') do set num=%%i
+echo ファイル数: %num%
+if not %num%==0 (
+    echo workディレクトリにファイルが存在します
+
+    rem 対象フォルダをzip圧縮し、outputフォルダへ出力
+    PowerShell -Command "Compress-Archive -Path .\work\iis\ -DestinationPath .\output\iis\iis_access_%timestamp%.zip -Force"
+) else (
+    echo workディレクトリにファイルが存在しません
+)
+
 
 rem クリーニング対象一覧表示
 for /f "skip=7" %%i in ('dir .\input\iis_access\ /b /on') do echo %%i
