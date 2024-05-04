@@ -1,5 +1,5 @@
-rem 蜈･蜉帙ヵ繧ｩ繝ｫ繝縺ｮiis繧｢繧ｯ繧ｻ繧ｹ繝ｭ繧ｰ縺ｮ繝代せ
+rem 入力フォルダのiisアクセスログのパス
 set input_path=.\input\iis_access\
 
-rem 證怜捷蛹匁枚蟄怜��
+rem 暗号化文字列 EOa/Zh7mlFrTvEAvikSyGg==
 set enc_text=EOa/Zh7mlFrTvEAvikSyGg==

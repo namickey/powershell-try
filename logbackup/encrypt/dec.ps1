@@ -1,13 +1,18 @@
+try {
+    # AESˆÃ†‰»ƒIƒuƒWƒFƒNƒg‚ğì¬
+    $AES = [System.Security.Cryptography.Aes]::Create()
 
-$AES = [System.Security.Cryptography.Aes]::Create()
-
-# ã‚­ãƒ¼ã¨IVã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
-$AES.Key = [System.Convert]::FromBase64String((Get-Content ".\encrypt\share.key"))
-$AES.IV = [System.Convert]::FromBase64String((Get-Content ".\encrypt\share.iv"))
-
-# ç’°å¢ƒå¤‰æ•°ã‹ã‚‰æš—å·åŒ–ã•ã‚ŒãŸæ–‡å­—åˆ—ã‚’å–å¾—
-$encrypted = [System.Convert]::FromBase64String(($Env:enc_text))
-
-# å¾©å·åŒ–
-$decrypted = $AES.CreateDecryptor().TransformFinalBlock($encrypted, 0, $encrypted.Length)
-return ([System.Text.Encoding]::UTF8.GetString($decrypted))
+    # ƒL[‚ÆIV‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+    $AES.Key = [System.Convert]::FromBase64String((Get-Content ".\encrypt\share.key"))
+    $AES.IV = [System.Convert]::FromBase64String((Get-Content ".\encrypt\share.iv"))
+    
+    # ŠÂ‹«•Ï”‚©‚çˆÃ†‰»‚³‚ê‚½•¶š—ñ‚ğæ“¾
+    $encrypted = [System.Convert]::FromBase64String(($Env:enc_text))
+    #$encrypted = [System.Convert]::FromBase64String(("EOa/Zh7mlFrTvEAvikSyGg=="))
+    
+    # •œ†‰»
+    $decrypted = $AES.CreateDecryptor().TransformFinalBlock($encrypted, 0, $encrypted.Length)
+    return ([System.Text.Encoding]::UTF8.GetString($decrypted))
+} catch {
+    return 1
+}
