@@ -8,11 +8,13 @@ try {
     
     # ŠÂ‹«•Ï”‚©‚çˆÃ†‰»‚³‚ê‚½•¶š—ñ‚ğæ“¾
     $encrypted = [System.Convert]::FromBase64String(($Env:enc_text))
-    #$encrypted = [System.Convert]::FromBase64String(("EOa/Zh7mlFrTvEAvikSyGg=="))
     
     # •œ†‰»
     $decrypted = $AES.CreateDecryptor().TransformFinalBlock($encrypted, 0, $encrypted.Length)
+
+    # •œ†‰»‚µ‚½•¶š—ñ‚ğ•Ô‚·
     return ([System.Text.Encoding]::UTF8.GetString($decrypted))
 } catch {
+    # —\Šú‚¹‚ÊƒGƒ‰[‚ª”­¶‚µ‚½ê‡‚Í1‚ğ•Ô‚·
     return 1
 }
