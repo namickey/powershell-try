@@ -101,10 +101,10 @@ if not %num%==0 (
     rem ファイル名に日付
     PowerShell -Command "Compress-Archive -Path .\work\iis\ -DestinationPath .\output\iis\iis_%date%.zip -Force"
     if not exist .\output\iis\iis_%date%.zip (
-        echo 失敗: .\work\iis\ ファイル圧縮
+        echo ⇒失敗: .\output\iis\iis_%date%.zip ファイル圧縮
         exit /b 1
     ) else (
-        echo 成功: .\work\iis\ ファイル圧縮
+        echo ⇒成功: .\output\iis\iis_%date%.zip ファイル圧縮
     )
 ) else (
     echo workディレクトリにファイルが存在しません。
@@ -132,10 +132,10 @@ for /f "skip=7" %%i in ('dir .\input\iis_access\*.log /b /o-n') do (
 echo -------outputクリーニング処理-------
 
 rem outputクリーニング対象一覧表示
-for /f "skip=10" %%i in ('dir .\output\iis\*.zip /b /o-n') do echo outputクリーニング対象:%%i
+for /f "skip=3" %%i in ('dir .\output\iis\*.zip /b /o-n') do echo outputクリーニング対象:%%i
 
 rem outputクリーニング
-for /f "skip=10" %%i in ('dir .\output\iis\*.zip /b /o-n') do (
+for /f "skip=3" %%i in ('dir .\output\iis\*.zip /b /o-n') do (
     del .\output\iis\%%i
     rem delコマンドはerrorlevel判定ができないので、ファイルが存在するかで判定する
     rem ファイルを「読み取り専用」にするとエラー発生可能
