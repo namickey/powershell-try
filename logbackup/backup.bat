@@ -54,6 +54,7 @@ rem 異常終了時のファイル残存を考慮し、ファイルクリーニングを早めに実施
 del .\work\iis\*.log
 if exist .\work\iis\*.log (
     echo 失敗: workディレクトリ ファイルクリーニング 
+    exit /b 1
 ) else (
     echo 成功: workディレクトリ ファイルクリーニング
 )
@@ -124,6 +125,7 @@ for /f "skip=7" %%i in ('dir .\input\iis_access\*.log /b /o-n') do (
     rem ファイルを「読み取り専用」にするとエラー発生可能
     if exist .\input\iis_access\%%i (
         echo ⇒失敗: %%i inputファイルクリーニング
+        exit /b 1
     ) else (
         echo ⇒成功: %%i inputファイルクリーニング
     )
@@ -141,6 +143,7 @@ for /f "skip=3" %%i in ('dir .\output\iis\*.zip /b /o-n') do (
     rem ファイルを「読み取り専用」にするとエラー発生可能
     if exist .\input\iis_access\%%i (
         echo ⇒失敗: %%i outputファイルクリーニング
+        exit /b 1
     ) else (
         echo ⇒成功: %%i outputファイルクリーニング
     )
