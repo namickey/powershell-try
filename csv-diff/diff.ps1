@@ -1,20 +1,27 @@
+# 入力ファイル２つ、出力ファイル１つをセットアップ
+$before = import-csv -Encoding OEM -Path .\before.csv
+$after = import-csv -Encoding OEM -Path .\after.csv
+$outfile = New-Object System.IO.StreamWriter("chukan.csv", $false, [System.Text.Encoding]::GetEncoding("sjis"))
 
 # チェック処理
 # $t1: 比較対象1
 # $t2: 比較対象2
 # $outfile: 出力ファイル
-function check($t1, $t2, $outfile) {
+function checkAll($t1, $t2) {
+    checkSize $t1 $t2
+    #checkXXXXXX
+    #checkXXXXXX
+}
+
+# サイズチェック
+# 一致確認
+function checkSize($t1, $t2) {
     if ($t1.サイズ -ne $t2.サイズ) {
         $message = "$($t1.テーブル名),$($t1.カラム名),サイズ,$($t1.サイズ),$($t2.サイズ),`"size is different.`""
         Write-Host $message
         $outfile.WriteLine($message)
     }
 }
-
-# 入力ファイル２つ、出力ファイル１つをセットアップ
-$before = import-csv -Encoding OEM -Path .\before.csv
-$after = import-csv -Encoding OEM -Path .\after.csv
-$outfile = New-Object System.IO.StreamWriter("chukan.csv", $false, [System.Text.Encoding]::GetEncoding("sjis"))
 
 # after.csvでループする。※before.csvにだけ存在するテーブルやカラムは見つからない
 foreach ($af in $after) {
@@ -35,7 +42,7 @@ foreach ($af in $after) {
         continue
     }
     # 同じキー（テーブルとカラム）が見つかった場合、チェック処理を行う
-    check $af $bf $outfile
+    checkAll $af $bf
     
 }
 
@@ -58,7 +65,7 @@ foreach ($bf in $before) {
         continue
     }
     # 同じキー（テーブルとカラム）が見つかった場合、チェック処理を行う
-    check $af $bf $outfile
+    checkAll $af $bf
 }
 
 $outfile.Close()
