@@ -1,4 +1,5 @@
-# ファイル一覧に記載されているファイル名に変換する処理
+# ファイルコピーを行うスクリプト
+# また、ファイル一覧に記載されているファイル名に変換を行う
 
 $excel = New-Object -ComObject Excel.Application
 $excel.Visible = $false
@@ -34,6 +35,7 @@ $list = Get-ChildItem -File -Filter *.xlsx
 #$list | ForEach-Object { Write-Output $_.FullName }
 Set-Location ../
 
+$i = 0
 ForEach($l in $list) {
     $name = $l.Name
     $fullname = $l.FullName
@@ -43,7 +45,10 @@ ForEach($l in $list) {
         if ($name -eq $tablename) {
             $destination = "1_renamed\" + $fl.ファイル名 + ".xlsx"
             Copy-Item $fullname -Destination $destination
+            write-host $name.padright(40,' ')",=>, "$destination
+            $i++
             break
         }
     }
 }
+write-host "コピー数: $i"
