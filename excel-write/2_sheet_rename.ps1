@@ -4,11 +4,9 @@ function Rename-ExcelSheet {
     param (
         [string]$filePath,
         [string]$currentSheetName,
-        [string]$newSheetName
+        [string]$newSheetName,
+        $excel
     )
-
-    $excel = New-Object -ComObject Excel.Application
-    $excel.Visible = $false
 
     try {
         $workbook = $excel.Workbooks.Open($filePath)
@@ -18,19 +16,14 @@ function Rename-ExcelSheet {
         $sheet.Name = $newSheetName
 
         # セルの値を変更
-        $sheet.Cells.Item(2, 2).Value2 = "新規"
+        $sheet.Cells.Item(1, 2).Value2 = "2024/01/01"
 
         $workbook.Save()
     } catch {
         Write-Error "エラーが発生しました: $_"
     } finally {
-        $excel.Quit()
-
-        # COMオブジェクトの解放
         [System.Runtime.Interopservices.Marshal]::ReleaseComObject($sheet) | Out-Null
         [System.Runtime.Interopservices.Marshal]::ReleaseComObject($workbook) | Out-Null
-        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
-        Remove-Variable -Name excel
         Remove-Variable -Name workbook
         Remove-Variable -Name sheet
     }
@@ -40,7 +33,17 @@ Set-Location 1_renamed
 $list = Get-ChildItem -File -Filter *.xlsx
 $list | ForEach-Object { Write-Output $_.FullName }
 
-ForEach($l in $list) {
-    Rename-ExcelSheet -filePath $l.FullName -currentSheetName "表紙" -newSheetName "タイトル"
-}
+$excel = New-Object -ComObject Excel.Application
+$excel.Visible = $false
 
+try{
+    ForEach($l in $list) {
+        Rename-ExcelSheet -filePath $l.FullName -currentSheetName "データ" -newSheetName "テーブル" -excel $excel
+    }
+} catch {
+    Write-Error "エラーが発生しました: $_"
+} finally {
+    $excel.Quit()
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+    Remove-Variable -Name excel
+}
