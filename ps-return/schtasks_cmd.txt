@@ -1,0 +1,16 @@
+
+schtasks /create
+/TN ps_return
+/TR "C:\Users\xxx\github\powershell-try\ps-return\run_dec.bat"
+/SC WEEKLY
+/D SUN
+/ST 21:25
+/RU user1
+/RL HIGHEST
+
+
+
+schtasks /create /TN ps_return /TR "C:\Users\xxx\github\powershell-try\ps-return\run_dec.bat" /SC WEEKLY /D SUN /ST 22:17 /RU user1
+
+
+
