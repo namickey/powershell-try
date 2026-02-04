@@ -19,12 +19,11 @@ echo -------クリーニング処理-------
 
 forfiles /P "iis_httperr" /D -180 /C "cmd /c if @isdir==FALSE echo @path" >nul 2>&1
 if !errorlevel! equ 0 (
-    echo %date% %time% 半年前以上のファイルを削除します。
-    forfiles /P "iis_httperr" /D -180 /C "cmd /c echo 削除対象ファイル：@path & if @isdir==FALSE del /q @path"
-
+    forfiles /P "iis_httperr" /D -180 /C "cmd /c if @isdir==FALSE del /q @path & echo 削除済みファイル：@path"
     forfiles /P "iis_httperr" /D -180 /C "cmd /c if @isdir==FALSE echo @path" >nul 2>&1
     if !errorlevel! equ 0 (
         echo %date% %time% [NG] ファイル削除に失敗しました。
+        forfiles /P "iis_httperr" /D -180 /C "cmd /c echo 削除失敗ファイル：@path"
         exit /b 1
     ) else (
         echo %date% %time% [OK] ファイル削除に成功しました。
