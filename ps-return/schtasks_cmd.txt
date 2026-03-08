@@ -11,6 +11,6 @@ schtasks /create
 
 
 schtasks /create /TN ps_return /TR "C:\Users\xxx\github\powershell-try\ps-return\run_dec.bat" /SC WEEKLY /D SUN /ST 22:17 /RU user1
-
-
+schtasks /create /TN ps_return /TR "C:\Users\xxx\github\powershell-try\ps-return\run_dec.bat" /SC WEEKLY /D SUN,MON /ST 22:17 /RU user1
+schtasks /create /TN ps_return /TR "C:\Users\xxx\github\powershell-try\ps-return\run_dec.bat" /SC WEEKLY /D MON,TUE,WED,THU,FRI /ST 22:17 /RU user1
 
